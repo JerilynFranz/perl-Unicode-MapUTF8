@@ -55,73 +55,59 @@ but Encode is the preferred method in that environment.
 
 =head1 CHANGES
 
- 1.11 2005.10.10   Documentation changes. Addition of Build.PL support.
-                   Added various build tests, LICENSE, Artistic_License.txt,
-                   GPL_License.txt. Split documentation into seperate
-                   .pod file. Added Japanese translation of POD.
+1.13 2020.09.27   Fixing MANIFEST.SKIP error
 
- 1.10 2005.05.22 - Fixed bug in conversion of ISO-2022-JP to UTF-8.
-                   Problem and fix found by Masahiro HONMA
-                   <masahiro.honma@tsutaya.co.jp>.
+1.12 2020.09.27   Build tool updates. Maintainer updates. POD error fixes.
+                  Relicensed under MIT license.
 
-                   Similar bugs in conversions of shift_jis and euc-jp
-                   to UTF-8 fixed as well.
-                  
- 1.09 2001.08.22 - Fixed multiple typo occurances of 'uft'
-                   where 'utf' was meant in code. Problem affected
-                   utf16 and utf7 encodings. Problem found
-                   by devon smith <devon@taller.PSCL.cwru.edu>
+1.11 2005.10.10   Documentation changes. Addition of Build.PL support.
+                  Added various build tests, LICENSE, Artistic_License.txt,
+                  GPL_License.txt. Split documentation into seperate
+                  .pod file. Added Japanese translation of POD.
 
- 1.08 2000.11.06 - Added 'utf8_charset_alias' function to
-                   allow for runtime setting of character
-                   set aliases. Added several alternate
-                   names for 'sjis' (shiftjis, shift-jis,
-                   shift_jis, s-jis, and s_jis).
+1.10 2005.05.22 - Fixed bug in conversion of ISO-2022-JP to UTF-8.
+                  Problem and fix found by Masahiro HONMA
+                  <masahiro.honma@tsutaya.co.jp>.
 
-                   Corrected 'croak' messages for
-                   'from_utf8' functions to appropriate
-                   function name.
+                  Similar bugs in conversions of shift_jis and euc-jp
+                  to UTF-8 corrected as well.
 
-                   Tightened up initialization encapsulation
+1.09 2001.08.22 - Fixed multiple typo occurances of 'uft'
+                  where 'utf' was meant in code. Problem affected
+                  utf16 and utf7 encodings. Problem found
+                  by devon smith <devon@taller.PSCL.cwru.edu>
 
-                   Corrected fatal problem in jcode from
-                   unicode internals. Problem and fix
-                   found by Brian Wisti <wbrian2@uswest.net>.
+1.08 2000.11.06 Added 'utf8_charset_alias' function to allow for runtime
+                setting of character set aliases. Added several alternate
+                names for 'sjis' (shiftjis, shift-jis, shift_jis, s-jis,
+                and s_jis). 
 
- 1.07 2000.11.01 - Added 'croak' to use Carp declaration to
-                   fix error messages.  Problem and fix
-                   found by Brian Wisti
-                   <wbrian2@uswest.net>.
+                Corrected 'croak' messages for 'from_utf8' functions to
+                appropriate function name.
 
- 1.06 2000.10.30 - Fix to handle change in stringification
-                   of overloaded objects between Perl 5.005
-                   and 5.6. Problem noticed by Brian Wisti
-                   <wbrian2@uswest.net>.
+                Corrected fatal problem in jcode-unicode internals. Problem 
+                and fix found by Brian Wisti <wbrian2@uswest.net>.
 
- 1.05 2000.10.23 - Error in conversions from UTF8 to
-                   multibyte encodings corrected
+1.07 2000.11.01 Added 'croak' to use Carp declaration to fix error
+                messages. Problem and fix found by <wbrian2@uswest.net>.
 
- 1.04 2000.10.23 - Additional diagnostic messages added
-                   for internal error conditions
+1.06 2000.10.30 Fix to handle change in stringification of overloaded
+                objects between Perl 5.005 and 5.6.  
+                Problem noticed by Brian Wisti <wbrian2@uswest.net>.
 
- 1.03 2000.10.22 - Bug fix for load time autodetction of
-                   Unicode::Map8 encodings
+1.05 2000.10.23 Error in conversions from UTF8 to multibyte encodings corrected
 
- 1.02 2000.10.22 - Added load time autodetection of
-                   Unicode::Map8 supported character set
-                   encodings.
+1.04 2000.10.23 Additional diagnostic error messages added for
+                internal errors
 
-                   Fixed internal calling error for some
-                   character sets with 'from_utf8'. Thanks
-                   goes to Ilia Lobsanov
-                   <ilia@lobsanov.com> for reporting this
-                   problem.
+1.03 2000.10.22 Bug fix for load time Unicode::Map encoding
+                detection
 
- 1.01 2000.10.02 - Fixed handling of empty strings and
-                   added more identification for error
-                   messages.
+1.02 2000.10.22 Bug fix to 'from_utf8' method and load time
+                detection of Unicode::Map8 supported character
+                set encodings
 
- 1.00 2000.09.29 - Pre-release version
+1.01 2000.10.02 Initial public release
 
 =head1 FUNCTIONS
 

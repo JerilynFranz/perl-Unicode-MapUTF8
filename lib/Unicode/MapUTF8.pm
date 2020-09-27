@@ -18,7 +18,7 @@ BEGIN {
     @EXPORT      = qw ();
     @EXPORT_OK   = qw (utf8_supported_charset to_utf8 from_utf8 utf8_charset_alias);
     @EXPORT_TAGS = qw ();
-    $VERSION     = "1.12";
+    $VERSION     = "1.13";
 }
 
 ############################

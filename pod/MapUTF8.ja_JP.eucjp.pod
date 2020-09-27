@@ -48,6 +48,9 @@ Unicode¥â¥¸¥å¡¼¥ë¤Ø¤Î£±¤Ä¤Î¶¦ÄÌ¤Î¥¤¥ó¥¿¡¼¥Õ¥§¡¼¥¹¡¢²¼Éß¤­¤Ë¤Ê¤Ã¤Æ¤¤¤ë¼ÂÁõ¤òÃÎ¤ë¤
 ¡Ê¸¶Ê¸¤Î¤Ş¤Ş¡Ë
 
 =head1 ´Ø¿ô
+
+1.13 2020.09.27   Fixing MANIFEST.SKIP error
+
 1.12 2020.09.27   Build tool updates. Maintainer updates. POD error fixes.
                   Relicensed under MIT license.
 
@@ -100,8 +103,6 @@ Unicode¥â¥¸¥å¡¼¥ë¤Ø¤Î£±¤Ä¤Î¶¦ÄÌ¤Î¥¤¥ó¥¿¡¼¥Õ¥§¡¼¥¹¡¢²¼Éß¤­¤Ë¤Ê¤Ã¤Æ¤¤¤ë¼ÂÁõ¤òÃÎ¤ë¤
 
 1.01 2000.10.02 Initial public release
 
-
-=over
 
 =item utf8_charset_alias({ $alias => $charset });
 
