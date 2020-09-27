@@ -1,0 +1,232 @@
+=encoding euc-jp
+
+=head1 名前
+
+Unicode::MapUTF8 - 任意の文字セットから／へのUTF8の変換
+
+=head1 概要
+
+ use Unicode::MapUTF8 qw(to_utf8 from_utf8 utf8_supported_charset);
+
+ # 'ISO-8859-1'の文字列を 'UTF8'に変換する
+ my $output = to_utf8({ -string => 'An example', -charset => 'ISO-8859-1' });
+
+ # 'UTF8'エンコーディングの文字列をエンコーディング 'ISO-8859-1'へ変換する
+ my $other  = from_utf8({ -string => 'Other text', -charset => 'ISO-8859-1' });
+
+ # 利用できる文字セットエンコーディングのリスト
+ my @character_sets = utf8_supported_charset;
+
+ # 文字セット別名の追加
+ utf8_charset_alias({ 'ms-japanese' => 'sjis' });
+
+ # ２つの任意の（しかし大きく互換性のある）文字セットエンコーディングでの変換
+ # (SJIS to EUC-JP)
+ my $utf8_string   = to_utf8({ -string =>$sjis_string, -charset => 'sjis'});
+ my $euc_jp_string = from_utf8({ -string => $utf8_string, -charset => 'euc-jp' })
+
+ # 特定の文字セットがサポートされているかを確認
+ if (utf8_supported_charset('ISO-8859-1') {
+     # Yes
+ }
+
+=head1 説明
+
+UTF8とその他のエンコーディングから／への変換のための中核となるルーチンの間のアダプタ層を提供します。本質的には、複数存在する
+Unicodeモジュールへの１つの共通のインターフェース、下敷きになっている実装を知ることなく、簡単にUTF8から／へ他の文字セットエンコーディ
+ング変換を簡単におこないます。そのため、これはUnicode::String、Unicode::Map8、Unicode::Map、Jcodeモ
+ジュールを標準化された簡単なAPIの中に包みます。
+
+またこれはUTF-8をベースに一般的な文字セット変換も提供します−これは２段階の変換つなげることにより、２つの互換性があり、サポートされている文字セットで可能です。
+
+ほとんどのことがPerl的なので−かみ砕く対象として数多くの小さいなものの代わりに２、３の大きな固まりを与えると、1秒間により多くの文字を扱います。
+
+設計では、登場するいかなる新しい文字セット・エンコーディング変換モジュールも取り込むように簡単に拡張することができます。
+
+=head1 変更点
+
+（原文のまま）
+
+=head1 関数
+1.12 2020.09.27   Build tool updates. Maintainer updates. POD error fixes.
+                  Relicensed under MIT license.
+
+1.11 2005.10.10   Documentation changes. Addition of Build.PL support.
+                  Added various build tests, LICENSE, Artistic_License.txt,
+                  GPL_License.txt. Split documentation into seperate
+                  .pod file. Added Japanese translation of POD.
+
+1.10 2005.05.22 - Fixed bug in conversion of ISO-2022-JP to UTF-8.
+                  Problem and fix found by Masahiro HONMA
+                  <masahiro.honma@tsutaya.co.jp>.
+
+                  Similar bugs in conversions of shift_jis and euc-jp
+                  to UTF-8 corrected as well.
+
+1.09 2001.08.22 - Fixed multiple typo occurances of 'uft'
+                  where 'utf' was meant in code. Problem affected
+                  utf16 and utf7 encodings. Problem found
+                  by devon smith <devon@taller.PSCL.cwru.edu>
+
+1.08 2000.11.06 Added 'utf8_charset_alias' function to allow for runtime
+                setting of character set aliases. Added several alternate
+                names for 'sjis' (shiftjis, shift-jis, shift_jis, s-jis,
+                and s_jis). 
+
+                Corrected 'croak' messages for 'from_utf8' functions to
+                appropriate function name.
+
+                Corrected fatal problem in jcode-unicode internals. Problem 
+                and fix found by Brian Wisti <wbrian2@uswest.net>.
+
+1.07 2000.11.01 Added 'croak' to use Carp declaration to fix error
+                messages. Problem and fix found by <wbrian2@uswest.net>.
+
+1.06 2000.10.30 Fix to handle change in stringification of overloaded
+                objects between Perl 5.005 and 5.6.  
+                Problem noticed by Brian Wisti <wbrian2@uswest.net>.
+
+1.05 2000.10.23 Error in conversions from UTF8 to multibyte encodings corrected
+
+1.04 2000.10.23 Additional diagnostic error messages added for
+                internal errors
+
+1.03 2000.10.22 Bug fix for load time Unicode::Map encoding
+                detection
+
+1.02 2000.10.22 Bug fix to 'from_utf8' method and load time
+                detection of Unicode::Map8 supported character
+                set encodings
+
+1.01 2000.10.02 Initial public release
+
+
+=over
+
+=item utf8_charset_alias({ $alias => $charset });
+
+文字セット別名の実行時の代入に使われます。
+
+引数なしで呼ばれると、定義されている別名と、それにマップされる文字セットのハッシュを返します。
+
+例：:
+
+  my $aliases     = utf8_charset_alias;
+  my @alias_names = keys %$aliases;
+
+１つのパラメータ付きで呼ばれると、もしその別名が定義されていれば、'本当の'文字セットの名前を返します。それが別名に見つからなければundefを返します。
+
+例：
+
+    if (! utf8_charset_alias('VISCII')) {
+        # No alias for this
+    }
+
+もし'alias' => 'charset'の組のリストで呼ばれれば、それらの別名が使えるように定義します。
+
+例：
+
+    utf8_charset_alias({ 'japanese' => 'sjis', 'japan' => 'sjis' });
+
+注意：渡された組が、予め定義されている文字セット・エンコーディングの集合に定義されている文字セットにマップされなければ、croakします。これは他の別名への別名を許してはいません。
+
+複数の文字セットを１回の呼出しで設定することができます。
+
+別名をクリーンするためには、undefの文字セットマッピングを渡します。
+
+例：
+
+    utf8_charset_alias({ 'japanese' => undef });
+
+別名が設定されている間、もし予め定義されている文字セットであれば、'utf8_supported_charset' 関数は別名を返します。
+
+基本の定義された文字エンコーディングを別名でオーバーライドすると、標準エラー（STDERR)への警告メッセージを出します。
+
+=back
+
+=over
+
+=item utf8_supported_charset($charset_name);
+
+（ユーザが定義した別名も含めて）名づけられた文字セットがサポートされていればtrueを返します。<p>そうでなければfalseを返します。
+
+例：
+
+    if (! utf8_supported_charset('VISCII')) {
+        # まだサポートされていません
+    }
+
+パラメータなしで、リスト・コンテキストで呼ばれると、（ユーザが定義した別名も含めて）サポートされているすべての文字セット名のリストを返します。
+
+例：
+
+    my @charsets = utf8_supported_charset;
+
+=back
+
+=over
+
+=item to_utf8({ -string => $string, -charset => $source_charset });
+
+指定された元の文字セット(source charset)からUTF8に変換された文字列を返します。
+
+=back
+
+=over
+
+=item from_utf8({ -string => $string, -charset => $target_charset});
+
+UTF8から指定されたターゲットの文字セット(target charset)に変換された文字列を返します。
+
+=back
+
+=head1 バージョン
+
+1.12 - 2020.09.27
+
+=head1 やるべきこと
+
+Jcode、2バイト・エンコーディングそしてエンコーディング別名のための逆行テスト
+
+=head1 参考資料
+
+L<Unicode::String> L<Unicode::Map8> L<Unicode::Map> L<Jcode>
+
+=head1 著作権
+
+Copyright 2000-2020, Jerilyn Franz. All rights reserved.
+
+=head1 作者
+
+Jerilyn Franz <cpan@jerilyn.info>
+
+=head1 クレジット
+
+川合孝典 "Kawai,Takanori" <GCD00051@nifty.ne.jp> - 邦訳
+
+=head1 ライセンス
+
+
+MIT License
+
+Copyright (c) 2020 Jerilyn Franz
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+=cut
